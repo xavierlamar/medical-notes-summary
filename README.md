@@ -1,9 +1,8 @@
-```md
-# 🚀 AI Business Idea Generator (SaaS)
+# 🩺 Healthcare Consultation Assistant (SaaS)
 
-An **AI-powered SaaS application** that generates business ideas in real time using streaming AI responses.
+A **professional healthcare SaaS application** that helps doctors transform raw consultation notes into **structured medical summaries**, **clear next steps**, and **patient-friendly email drafts** — streamed in real time using AI.
 
-Built with a **modern Next.js frontend**, **FastAPI backend**, **Clerk authentication**, and deployed seamlessly on **Vercel**.
+Built with a **modern Next.js frontend**, **FastAPI backend**, **Clerk authentication**, and deployed on **Vercel**.
 
 ---
 
@@ -11,36 +10,51 @@ Built with a **modern Next.js frontend**, **FastAPI backend**, **Clerk authentic
 
 - ⚛️ Next.js (Pages Router) for stability
 - 🟦 TypeScript for type safety
-- 🔐 Clerk Authentication
-- 🐍 FastAPI backend
+- 🔐 Clerk Authentication & subscription protection
+- 🐍 FastAPI backend (Vercel Serverless)
 - 🔄 Real-time AI streaming responses (SSE)
-- 📝 Markdown rendering
-- ☁️ Vercel-ready deployment
+- 📝 Markdown rendering of medical summaries
+- 📅 Structured consultation forms with date picker
+- ☁️ Vercel-ready production deployment
 
 ---
 
 ## 🗂️ Project Structure
 
-```
-
 saas/
 ├─ api/
-│  └─ index.py          # FastAPI backend (Vercel Serverless)
+│ └─ index.py # FastAPI backend (Vercel Serverless)
 ├─ pages/
-│  ├─ _app.tsx
-│  ├─ _document.tsx
-│  ├─ index.tsx         # Business idea generator UI
-│  └─ product.tsx
+│ ├─ _app.tsx
+│ ├─ _document.tsx
+│ ├─ index.tsx # Marketing / landing page
+│ └─ product.tsx # Consultation assistant (protected)
 ├─ public/
 ├─ styles/
-│  └─ globals.css
+│ └─ globals.css
 ├─ .env.local
 ├─ requirements.txt
 ├─ package.json
 ├─ next.config.ts
 └─ README.md
 
-````
+yaml
+Copy code
+
+---
+
+## 🩺 What This App Does
+
+The **Healthcare Consultation Assistant** allows medical professionals to:
+
+- Enter doctor’s consultation notes
+- Select the visit date using a date picker
+- Generate:
+  - 🧾 **Professional summaries** for medical records
+  - ✅ **Actionable next steps** for the doctor
+  - 📧 **Patient-friendly email drafts**
+- Stream AI-generated content in real time
+- Secure access with authentication and subscriptions
 
 ---
 
@@ -51,166 +65,113 @@ saas/
 ```env
 NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_XXXXXXXX
 CLERK_SECRET_KEY=sk_test_XXXXXXXX
-CLERK_JWKS_URL=https://<your-clerk-domain>/.well-known/jwks.json
-````
+CLERK_JWKS_URL=https://api.clerk.com/v1/jwks
+⚠️ Never commit .env.local to GitHub
 
-⚠️ **Never commit `.env.local` to GitHub**
+Vercel Environment Variables
+In Vercel Dashboard → Project → Settings → Environment Variables, add:
 
----
-
-### Vercel Environment Variables
-
-In **Vercel Dashboard → Project → Settings → Environment Variables**, add:
-
-| Name                              | Value                 |
-| --------------------------------- | --------------------- |
-| NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY | Clerk publishable key |
-| CLERK_SECRET_KEY                  | Clerk secret key      |
-| CLERK_JWKS_URL                    | Clerk JWKS URL        |
+Name	Value
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY	Clerk publishable key
+CLERK_SECRET_KEY	Clerk secret key
+CLERK_JWKS_URL	Clerk JWKS URL
 
 Enable for:
 
-* Production
-* Preview
-* Development
+Production
 
----
+Preview
 
-## 📦 Installation (Local)
+Development
 
-### 1️⃣ Clone the repository
-
-```bash
+📦 Installation (Local Development)
+1️⃣ Clone the repository
+bash
+Copy code
 git clone https://github.com/your-username/saas.git
 cd saas
-```
-
----
-
-### 2️⃣ Install frontend dependencies
-
-```bash
+2️⃣ Install frontend dependencies
+bash
+Copy code
 npm install
-```
-
----
-
-### 3️⃣ Install backend dependencies
-
-```bash
+3️⃣ Install backend dependencies
+bash
+Copy code
 pip install -r requirements.txt
-```
-
----
-
-### 4️⃣ Run locally
-
-#### Frontend (Next.js)
-
-```bash
+4️⃣ Install additional dependencies (Consultation Form)
+bash
+Copy code
+npm install react-datepicker
+npm install --save-dev @types/react-datepicker
+5️⃣ Run locally
+Frontend (Next.js)
+bash
+Copy code
 npm run dev
-```
-
-#### Backend (FastAPI – optional local run)
-
-```bash
+Backend (FastAPI – optional local run)
+bash
+Copy code
 uvicorn api.index:app --reload
-```
-
 Open:
 
-```
+arduino
+Copy code
 http://localhost:3000
-```
+🔄 AI Streaming (SSE)
+Uses Server-Sent Events (SSE)
 
----
+Streams AI output from FastAPI → Next.js
 
-## 🧠 AI Streaming
+Renders output incrementally as Markdown
 
-* Uses **Server-Sent Events (SSE)**
-* Streams responses from FastAPI → Next.js
-* Renders output as **Markdown**
-* Optimized for real-time UX
+Optimized for long-form medical summaries
 
----
+🔐 Authentication & Access Control (Clerk)
+Implemented with @clerk/nextjs
 
-## 🔐 Authentication (Clerk)
+JWT-based authentication for API access
 
-* Implemented with `@clerk/nextjs`
-* Secure API access using Clerk JWT verification
-* Fully compatible with Vercel Serverless Functions
+Subscription protection using <Protect />
 
----
+Secure backend verification via Clerk JWKS
 
-## ☁️ Deploying to Vercel (Production)
-
-### 1️⃣ Install Vercel CLI
-
-```bash
+☁️ Deploying to Vercel (Production)
+1️⃣ Install Vercel CLI
+bash
+Copy code
 npm install -g vercel
-```
-
----
-
-### 2️⃣ Login to Vercel
-
-```bash
+2️⃣ Login to Vercel
+bash
+Copy code
 vercel login
-```
-
----
-
-### 3️⃣ Deploy to production
-
-```bash
+3️⃣ Deploy to production
+bash
+Copy code
 vercel --prod
-```
+4️⃣ Verify deployment
+✅ Frontend deployed automatically
 
----
+✅ FastAPI runs via /api/index.py
 
-### 4️⃣ Verify deployment
+✅ Environment variables loaded securely
 
-* Frontend deployed automatically
-* FastAPI runs via `/api/index.py`
-* Environment variables loaded securely
-* Clerk authentication live 🎉
+✅ Clerk authentication & subscriptions active
 
----
+✅ Real-time AI streaming operational 🎉
 
-## 🛠️ Tech Stack
+🛠️ Tech Stack
+Next.js 16 (Pages Router)
 
-* Next.js 16 (Pages Router)
-* React 19
-* TypeScript
-* FastAPI
-* Clerk Authentication
-* Tailwind CSS
-* Vercel
+React 19
 
----
+TypeScript
 
-## 📄 Notes
+FastAPI (Python)
 
-* Uses **Pages Router** for long-term stability
-* Backend runs as a **Vercel Serverless Function**
-* Optimized for streaming AI responses
+Clerk Authentication
 
----
+Tailwind CSS
 
-## 📜 License
+Server-Sent Events (SSE)
 
-MIT License
-
-```
-
----
-
-### ✅ What you can do next
-If you want, I can:
-- 🔍 Review and optimize your `api/index.py` for Vercel streaming
-- 🔐 Add Clerk middleware examples
-- 📈 Add a **Production Checklist** section
-- 🧪 Add testing instructions
-
-Just tell me what you want next 🚀
-```
+Vercel
