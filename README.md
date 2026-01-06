@@ -16,6 +16,9 @@ This application is deployed using Docker containers on AWS App Runner, followin
 - 🐳 Dockerized full-stack application
 - ☁️ AWS App Runner deployment (HTTPS, scaling, monitoring)
 
+🌐 Live Demo
+🚀 Deployed at: https://sgzwdurqt2.us-east-1.awsapprunner.com/
+
 ## 🏗️ Architecture Overview
 
 **AWS Deployment Architecture:**
