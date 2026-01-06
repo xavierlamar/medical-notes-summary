@@ -1,177 +1,300 @@
-# 🩺 Healthcare Consultation Assistant (SaaS)
+🩺 Healthcare Consultation Assistant (SaaS)
 
-A **professional healthcare SaaS application** that helps doctors transform raw consultation notes into **structured medical summaries**, **clear next steps**, and **patient-friendly email drafts** — streamed in real time using AI.
+A production-grade healthcare SaaS application that helps doctors transform raw consultation notes into structured medical summaries, clear next steps, and patient-friendly email drafts — streamed in real time using AI.
 
-Built with a **modern Next.js frontend**, **FastAPI backend**, **Clerk authentication**, and deployed on **Vercel**.
+This application is deployed using Docker containers on AWS App Runner, following professional cloud deployment practices used by real engineering teams.
 
----
+✨ Features
 
-## ✨ Features
+⚛️ Next.js (Pages Router, Static Export)
 
-- ⚛️ Next.js (Pages Router) for stability
-- 🟦 TypeScript for type safety
-- 🔐 Clerk Authentication & subscription protection
-- 🐍 FastAPI backend (Vercel Serverless)
-- 🔄 Real-time AI streaming responses (SSE)
-- 📝 Markdown rendering of medical summaries
-- 📅 Structured consultation forms with date picker
-- ☁️ Vercel-ready production deployment
+🟦 TypeScript
 
----
+🔐 Clerk Authentication & subscription protection
 
-## 🗂️ Project Structure
+🐍 FastAPI backend
 
+🔄 Real-time AI streaming (Server-Sent Events)
+
+📝 Markdown rendering of medical summaries
+
+📅 Structured consultation forms with date picker
+
+🐳 Dockerized full-stack application
+
+☁️ AWS App Runner deployment (HTTPS, scaling, monitoring)
+
+🏗️ Architecture Overview
+AWS Deployment Architecture
+
+Single Docker container
+
+FastAPI serves:
+
+/api/consultation (AI streaming endpoint)
+
+Static Next.js frontend (exported HTML/JS)
+
+Amazon ECR — Docker image registry
+
+AWS App Runner — Serverless container hosting
+
+AWS IAM — Secure access control
+
+CloudWatch — Logs and monitoring
+
+Think of App Runner as “Vercel for Docker containers”, but with full infrastructure control.
+
+🗂️ Project Structure
 saas/
-├─ api/
-│ └─ index.py # FastAPI backend (Vercel Serverless)
-├─ pages/
-│ ├─ _app.tsx
-│ ├─ _document.tsx
-│ ├─ index.tsx # Marketing / landing page
-│ └─ product.tsx # Consultation assistant (protected)
-├─ public/
-├─ styles/
-│ └─ globals.css
-├─ .env.local
-├─ requirements.txt
-├─ package.json
-├─ next.config.ts
-└─ README.md
+├── pages/                  # Next.js Pages Router
+├── styles/                 # Global styles
+├── api/
+│   └── server.py           # FastAPI backend (serves API + static frontend)
+├── public/
+├── .env                    # Environment variables (never commit!)
+├── .dockerignore
+├── Dockerfile
+├── requirements.txt
+├── package.json
+├── next.config.ts
+├── tsconfig.json
+└── README.md
 
-yaml
-Copy code
+🩺 What This App Does
 
----
+Doctors can:
 
-## 🩺 What This App Does
+Enter consultation notes
 
-The **Healthcare Consultation Assistant** allows medical professionals to:
+Select visit date
 
-- Enter doctor’s consultation notes
-- Select the visit date using a date picker
-- Generate:
-  - 🧾 **Professional summaries** for medical records
-  - ✅ **Actionable next steps** for the doctor
-  - 📧 **Patient-friendly email drafts**
-- Stream AI-generated content in real time
-- Secure access with authentication and subscriptions
+Generate:
 
----
+🧾 Medical summaries (for records)
 
-## 🔐 Environment Variables
+✅ Actionable next steps
 
-### Local Development (`.env.local`)
+📧 Patient-friendly email drafts
 
-```env
-NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_XXXXXXXX
-CLERK_SECRET_KEY=sk_test_XXXXXXXX
+Receive AI output streamed in real time
+
+Access the app securely with Clerk authentication
+
+🔐 Environment Variables
+Local & AWS (.env)
+# Clerk
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_...
+CLERK_SECRET_KEY=sk_test_...
 CLERK_JWKS_URL=https://api.clerk.com/v1/jwks
-⚠️ Never commit .env.local to GitHub
 
-Vercel Environment Variables
-In Vercel Dashboard → Project → Settings → Environment Variables, add:
+# OpenAI
+OPENAI_API_KEY=sk-...
 
-Name	Value
-NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY	Clerk publishable key
-CLERK_SECRET_KEY	Clerk secret key
-CLERK_JWKS_URL	Clerk JWKS URL
+# AWS
+DEFAULT_AWS_REGION=us-east-1
+AWS_ACCOUNT_ID=123456789012
 
-Enable for:
 
-Production
+⚠️ Never commit .env to GitHub
 
-Preview
+🧠 Important Architecture Change (from Vercel)
 
-Development
+This app does NOT use server-side rendering.
 
-📦 Installation (Local Development)
-1️⃣ Clone the repository
-bash
-Copy code
-git clone https://github.com/your-username/saas.git
-cd saas
-2️⃣ Install frontend dependencies
-bash
-Copy code
-npm install
-3️⃣ Install backend dependencies
-bash
-Copy code
-pip install -r requirements.txt
-4️⃣ Install additional dependencies (Consultation Form)
-bash
-Copy code
-npm install react-datepicker
-npm install --save-dev @types/react-datepicker
-5️⃣ Run locally
-Frontend (Next.js)
-bash
-Copy code
-npm run dev
-Backend (FastAPI – optional local run)
-bash
-Copy code
-uvicorn api.index:app --reload
-Open:
+Instead:
 
-arduino
-Copy code
-http://localhost:3000
-🔄 AI Streaming (SSE)
-Uses Server-Sent Events (SSE)
+Next.js is exported as static files
 
-Streams AI output from FastAPI → Next.js
+FastAPI serves both:
 
-Renders output incrementally as Markdown
+API routes
 
-Optimized for long-form medical summaries
+Static frontend
 
-🔐 Authentication & Access Control (Clerk)
-Implemented with @clerk/nextjs
+Everything runs inside one Docker container
 
-JWT-based authentication for API access
+This simplifies AWS deployment and reduces cost.
 
-Subscription protection using <Protect />
+⚙️ Next.js Configuration (Static Export)
 
-Secure backend verification via Clerk JWKS
+next.config.ts
 
-☁️ Deploying to Vercel (Production)
-1️⃣ Install Vercel CLI
-bash
-Copy code
-npm install -g vercel
-2️⃣ Login to Vercel
-bash
-Copy code
-vercel login
-3️⃣ Deploy to production
-bash
-Copy code
-vercel --prod
-4️⃣ Verify deployment
-✅ Frontend deployed automatically
+import type { NextConfig } from "next";
 
-✅ FastAPI runs via /api/index.py
+const nextConfig: NextConfig = {
+  output: "export",
+  images: {
+    unoptimized: true,
+  },
+};
 
-✅ Environment variables loaded securely
+export default nextConfig;
 
-✅ Clerk authentication & subscriptions active
+🐳 Docker Configuration
+Dockerfile
+# Stage 1: Build frontend
+FROM node:22-alpine AS frontend-builder
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY . .
+ARG NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+ENV NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=$NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+RUN npm run build
 
-✅ Real-time AI streaming operational 🎉
+# Stage 2: Python backend
+FROM python:3.12-slim
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+COPY api/server.py .
+COPY --from=frontend-builder /app/out ./static
 
-🛠️ Tech Stack
-Next.js 16 (Pages Router)
+EXPOSE 8000
 
-React 19
+HEALTHCHECK CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"
 
-TypeScript
+CMD ["uvicorn", "server:app", "--host", "0.0.0.0", "--port", "8000"]
 
-FastAPI (Python)
+.dockerignore
+node_modules
+.next
+.env
+.env.local
+.git
+.vercel
+README.md
 
-Clerk Authentication
+🧪 Run Locally with Docker
+docker build \
+  --platform linux/amd64 \
+  --build-arg NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY="$NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY" \
+  -t consultation-app .
 
-Tailwind CSS
+docker run -p 8000:8000 \
+  -e CLERK_SECRET_KEY="$CLERK_SECRET_KEY" \
+  -e CLERK_JWKS_URL="$CLERK_JWKS_URL" \
+  -e OPENAI_API_KEY="$OPENAI_API_KEY" \
+  consultation-app
 
-Server-Sent Events (SSE)
 
-Vercel
+Open: http://localhost:8000
+
+☁️ Deploying to AWS App Runner (Production)
+1️⃣ AWS Account Setup (CRITICAL)
+
+Create a full AWS account (NOT sandbox free tier)
+
+Enable MFA on root account
+
+Set budget alerts:
+
+$1 (early)
+
+$5 (warning)
+
+$10 (stop)
+
+2️⃣ Create IAM User
+
+Create user: aiengineer
+
+Attach policies:
+
+AWSAppRunnerFullAccess
+
+AmazonEC2ContainerRegistryFullAccess
+
+CloudWatchLogsFullAccess
+
+IAMUserChangePassword
+
+IAMFullAccess
+
+⚠️ Never deploy using root credentials.
+
+3️⃣ Create ECR Repository
+
+Name: consultation-app
+
+Visibility: Private
+
+Region must match DEFAULT_AWS_REGION
+
+4️⃣ Push Docker Image to ECR
+aws ecr get-login-password --region $DEFAULT_AWS_REGION | \
+docker login --username AWS --password-stdin \
+$AWS_ACCOUNT_ID.dkr.ecr.$DEFAULT_AWS_REGION.amazonaws.com
+
+docker build \
+  --platform linux/amd64 \
+  --build-arg NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY="$NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY" \
+  -t consultation-app .
+
+docker tag consultation-app:latest \
+$AWS_ACCOUNT_ID.dkr.ecr.$DEFAULT_AWS_REGION.amazonaws.com/consultation-app:latest
+
+docker push \
+$AWS_ACCOUNT_ID.dkr.ecr.$DEFAULT_AWS_REGION.amazonaws.com/consultation-app:latest
+
+
+⚠️ Apple Silicon users MUST use --platform linux/amd64
+
+5️⃣ Create App Runner Service
+
+Source: Amazon ECR
+
+Image: consultation-app:latest
+
+Port: 8000
+
+vCPU: 0.25
+
+Memory: 0.5 GB
+
+Min / Max instances: 1
+
+Environment variables:
+
+CLERK_SECRET_KEY
+
+CLERK_JWKS_URL
+
+OPENAI_API_KEY
+
+Health check:
+
+Path: /health
+
+💰 Cost Expectations
+Service	Cost
+App Runner	~$5/month
+ECR	~$0.10/GB
+Total	~$5–6/month
+
+Pause the service when not in use to save money.
+
+🧠 Monitoring & Debugging
+
+App Runner → Logs tab
+
+CloudWatch for detailed logs
+
+Health endpoint: /health
+
+Common issues:
+
+Missing environment variables
+
+Wrong port (must be 8000)
+
+Missing --platform linux/amd64
+
+🚀 What You’ve Accomplished
+
+✅ Dockerized a full-stack SaaS
+✅ Deployed to AWS App Runner
+✅ Enabled HTTPS, scaling, monitoring
+✅ Set up cost controls
+✅ Used professional cloud deployment practices
